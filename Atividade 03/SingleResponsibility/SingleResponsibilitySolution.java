@@ -1,5 +1,3 @@
-import javax.xml.crypto.Data;
-
 public class SingleResponsibilitySolution
 {
     public static void main(String[] args)
