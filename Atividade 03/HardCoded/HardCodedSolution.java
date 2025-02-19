@@ -1,4 +1,3 @@
-
 public class HardCodedSolution
 {
     public static void main(String[] args)
