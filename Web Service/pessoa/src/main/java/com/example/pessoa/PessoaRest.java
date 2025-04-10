@@ -33,5 +33,16 @@ public class PessoaRest {
     public void post( @RequestBody Pessoa pessoa){
        this.pessoas.add(pessoa); 
     }
-    
+
+    @DeleteMapping("/{cpf}")
+    public ResponseEntity<Void> delete (@PathVariable String cpf) {
+        for (Pessoa p : pessoas) {
+            if (p.getCpf().equalsIgnoreCase(cpf)) {
+                pessoas.remove(p);
+                return ResponseEntity.noContent().build();
+            }
+        }
+
+        return ResponseEntity.notFound().build();
+    }    
 }
