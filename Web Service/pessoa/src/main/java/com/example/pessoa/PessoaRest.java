@@ -1,8 +1,8 @@
 package com.example.pessoa;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,8 @@ public class PessoaRest {
 
     private final HelloRest helloRest;
 
-    private List<Pessoa> pessoas = new ArrayList<>();
+    @Autowired
+    private PessoaDao pessoaDao;
 
     PessoaRest(HelloRest helloRest, PessoaApplication pessoaApplication) {
         this.helloRest = helloRest;
@@ -29,23 +30,21 @@ public class PessoaRest {
 
     @GetMapping
     public List<Pessoa> get(){
-        return pessoas;
+        return pessoaDao.findAll();
     }
 
     @PostMapping
     public void post( @RequestBody Pessoa pessoa){
-       this.pessoas.add(pessoa); 
+        pessoaDao.save(pessoa);
     }
 
-    @DeleteMapping("/{cpf}")
-    public ResponseEntity<Void> delete (@PathVariable String cpf) {
-        for (Pessoa p : pessoas) {
-            if (p.getCpf().equalsIgnoreCase(cpf)) {
-                pessoas.remove(p);
-                return ResponseEntity.noContent().build();
-            }
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        if (pessoaDao.existsById(id)) {
+            pessoaDao.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
-
-        return ResponseEntity.notFound().build();
-    }    
+    }  
 }

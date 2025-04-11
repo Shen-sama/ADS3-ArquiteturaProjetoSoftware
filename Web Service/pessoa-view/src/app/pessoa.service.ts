@@ -12,4 +12,13 @@ export class PessoaService {
   adicionarPessoa(pessoa: any): Observable<any> {
     return this.http.post(this.apiUrl, pessoa);
   }
+
+  listar(): Observable<any> {
+    return this.http.get(this.apiUrl);
+  }
+
+  deletar(id?: number): Observable<void> {
+    return this.http.delete<void>(`http://localhost:8080/pessoa/id/${id}`);
+  }
+
 }
